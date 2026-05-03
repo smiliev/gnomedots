@@ -34,23 +34,29 @@ trap cleanup EXIT INT TERM
 
 monitor_keyboard() {
     local dev="$1"
-    evtest "$dev" 2>/dev/null | while read line; do
-        if echo "$line" | grep -q "code $KEY_RIGHTALT (KEY_RIGHTALT), value 1"; then
-            unmute_mic
-        elif echo "$line" | grep -q "code $KEY_RIGHTALT (KEY_RIGHTALT), value 0"; then
-            mute_mic
-        fi
+    stdbuf -oL evtest "$dev" 2>/dev/null | while read line; do
+        case "$line" in
+            *"code $KEY_RIGHTALT (KEY_RIGHTALT), value 1"*)
+                unmute_mic
+                ;;
+            *"code $KEY_RIGHTALT (KEY_RIGHTALT), value 0"*)
+                mute_mic
+                ;;
+        esac
     done
 }
 
 monitor_mouse() {
     local dev="$1"
-    evtest "$dev" 2>/dev/null | while read line; do
-        if echo "$line" | grep -q "code $BTN_EXTRA (BTN_EXTRA), value 1"; then
-            unmute_mic
-        elif echo "$line" | grep -q "code $BTN_EXTRA (BTN_EXTRA), value 0"; then
-            mute_mic
-        fi
+    stdbuf -oL evtest "$dev" 2>/dev/null | while read line; do
+        case "$line" in
+            *"code $BTN_EXTRA (BTN_EXTRA), value 1"*)
+                unmute_mic
+                ;;
+            *"code $BTN_EXTRA (BTN_EXTRA), value 0"*)
+                mute_mic
+                ;;
+        esac
     done
 }
 
@@ -70,7 +76,7 @@ start_all_monitors() {
     done
 
     # Monitor all mice
-    for dev in /dev/input/by-path/*-mouse; do
+    for dev in /dev/input/by-path/*-event-mouse; do
         if [ -e "$dev" ]; then
             echo "Monitoring mouse: $dev"
             monitor_mouse "$dev" &
