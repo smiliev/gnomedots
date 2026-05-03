@@ -8,6 +8,7 @@ systemctl --user disable push-to-talk.service 2>/dev/null
 
 echo "Removing files..."
 rm -f ~/.local/bin/push-to-talk.py
+rm -rf ~/.local/share/push-to-talk
 rm -f ~/.config/systemd/user/push-to-talk.service
 
 systemctl --user daemon-reload

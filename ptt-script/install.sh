@@ -10,10 +10,12 @@ if ! python3 -c "import evdev" 2>/dev/null; then
     sudo apt-get install -y python3-evdev
 fi
 
-# Install script
+# Install script and sounds
 mkdir -p ~/.local/bin
 cp "$SCRIPT_DIR/push-to-talk.py" ~/.local/bin/
 chmod +x ~/.local/bin/push-to-talk.py
+mkdir -p ~/.local/share/push-to-talk
+cp "$SCRIPT_DIR/sounds/"*.ogg ~/.local/share/push-to-talk/
 
 # Install systemd service
 mkdir -p ~/.config/systemd/user

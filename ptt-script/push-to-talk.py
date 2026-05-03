@@ -12,11 +12,19 @@ BTN_EXTRA = ecodes.BTN_EXTRA
 WATCHED_KEYS = {KEY_RIGHTALT, BTN_EXTRA}
 
 
+SOUNDS_DIR = os.path.expanduser("~/.local/share/push-to-talk")
+SOUND_VOLUME = 100  # percent
+
+
 def set_mute(muted: bool):
     subprocess.run(
         ["pactl", "set-source-mute", "@DEFAULT_SOURCE@", "1" if muted else "0"],
         check=False,
     )
+    sound = os.path.join(SOUNDS_DIR, "off.ogg" if muted else "on.ogg")
+    if os.path.exists(sound):
+        volume = int(SOUND_VOLUME / 100 * 65536)
+        subprocess.Popen(["paplay", f"--volume={volume}", sound])
 
 
 def device_has_watched_keys(dev: InputDevice) -> bool:
