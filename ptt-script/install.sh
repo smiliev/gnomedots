@@ -4,10 +4,16 @@
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+# Check dependency
+if ! python3 -c "import evdev" 2>/dev/null; then
+    echo "Installing python3-evdev..."
+    sudo apt-get install -y python3-evdev
+fi
+
 # Install script
 mkdir -p ~/.local/bin
-cp "$SCRIPT_DIR/push-to-talk.sh" ~/.local/bin/
-chmod +x ~/.local/bin/push-to-talk.sh
+cp "$SCRIPT_DIR/push-to-talk.py" ~/.local/bin/
+chmod +x ~/.local/bin/push-to-talk.py
 
 # Install systemd service
 mkdir -p ~/.config/systemd/user

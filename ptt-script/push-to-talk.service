@@ -4,7 +4,7 @@ After=pipewire.service pulseaudio.service
 
 [Service]
 Type=simple
-ExecStart=%h/.local/bin/push-to-talk.sh
+ExecStart=/usr/bin/python3 %h/.local/bin/push-to-talk.py
 Restart=on-failure
 RestartSec=5
 
